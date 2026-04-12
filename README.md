@@ -6,7 +6,7 @@
 **Course:** TECH-GB.2336 — Data Science & AI for Business | NYU Stern, Spring 2026  
 **Instructor:** Prof. Foster Provost  
 **Team:** Palak Gupta · Tiffany Chiang · Anna Gellerman  
-**Live Report:** [platerisk-nyc GitHub Pages](https://Plk-g.github.io/platerisk-nyc) 
+**Live Report:** [platerisk-nyc GitHub Pages](https://plk-g.github.io/PlateRisk-NYC/) 
 
 ---
 
