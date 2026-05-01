@@ -309,7 +309,7 @@
 
   /* BUSINESS PROPOSAL */
 <!-- BUSINESS PROPOSAL -->
-<section id="proposal">
+<section id="business">
   <div class="container">
     <div class="section-tag">01 — Business Proposal</div>
     <h2 class="section-title">The problem with<br>how NYC inspects restaurants</h2>
@@ -353,7 +353,7 @@
           </div>
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Target Variable</div>
-            <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">Binary — whether the next inspection results in a critical violation (1) or not (0). Target rate: ~87% in the inspected sample, explained by selection bias in the dataset.</p>
+            <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">Binary — whether an inspection results in a critical violation (1) or not (0). Defined on the current inspection, not the next, to avoid temporal remediation bias. Base rate ~87% in the inspected sample.</p>
           </div>
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Features</div>
@@ -402,13 +402,13 @@
             <div style="font-size: 12px; color: var(--text3);">best performing model</div>
           </div>
           <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">VS RANDOM BASELINE</div>
-            <div style="font-size: 26px; font-weight: 700; color: var(--amber);">+0.20</div>
-            <div style="font-size: 12px; color: var(--text3);">AUC improvement over chance</div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">PRIMARY VALUE</div>
+            <div style="font-size: 26px; font-weight: 700; color: var(--amber);">Ranking</div>
+            <div style="font-size: 12px; color: var(--text3);">Severity prioritization</div>
           </div>
         </div>
-        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(79,142,247,0.05); border: 1px solid rgba(79,142,247,0.15); border-radius: 8px;">
-          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;"><strong style="color: var(--accent); font-weight: 600;">Open question for final writeup:</strong> The ~87% base rate in the inspected sample raises an important business framing question — if most inspected restaurants already receive critical violations, the value of ranking shifts from detection to severity prioritization. We are seeking Prof. Provost's guidance on whether to reframe the target as restaurant closures, first-time violations, or maintain the current definition with appropriate caveats. ROC-AUC of ~0.69 confirms genuine predictive signal regardless of target definition.</p>
+        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;">
+          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">At an 87% base rate in the inspected population, the primary business value of PlateRisk is severity ranking — surfacing the highest-risk restaurants for prioritized scheduling — rather than violation detection per se.</p>
         </div>
       </div>
     </div>
@@ -1091,12 +1091,13 @@
     PlateRisk
   </div>
   <ul class="nav-links">
-    <li><a href="#proposal">Proposal</a></li>
-    <li><a href="#process">Methodology</a></li>
+    <li><a href="#business">Business</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#preparation">Preparation</a></li>
+    <li><a href="#modeling">Modeling</a></li>
     <li><a href="#results">Results</a></li>
-    <li><a href="#progress">Progress</a></li>
+    <li><a href="#deployment">Deployment</a></li>
     <li><a href="#team">Team</a></li>
-    <li><a href="#next">Next Steps</a></li>
   </ul>
   <div class="nav-badge">NYU Stern · Spring 2026</div>
 </nav>
@@ -1117,16 +1118,16 @@
           <div class="label">Active restaurants</div>
         </div>
         <div class="hero-stat">
-          <div class="num">100K</div>
-          <div class="label">Inspections / year</div>
+          <div class="num">83K</div>
+          <div class="label">Inspections loaded</div>
         </div>
         <div class="hero-stat">
           <div class="num">K=500</div>
           <div class="label">Weekly capacity</div>
         </div>
         <div class="hero-stat">
-          <div class="num">+832</div>
-          <div class="label">Extra violations/yr caught</div>
+          <div class="num">0.699</div>
+          <div class="label">Best ROC-AUC</div>
         </div>
       </div>
       <div class="hero-ctas">
@@ -1144,19 +1145,19 @@
 
     <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem;">
       <div class="floating-card">
-        <div class="fc-label">RF Precision@K</div>
-        <div class="fc-val green">90.6%</div>
-        <div class="fc-sub">vs 87.4% baseline</div>
+        <div class="fc-label">GB ROC-AUC</div>
+        <div class="fc-val blue">0.699</div>
+        <div class="fc-sub">Best model</div>
       </div>
       <div class="floating-card" style="margin-left: 2rem;">
-        <div class="fc-label">ROC-AUC</div>
-        <div class="fc-val blue">0.599</div>
-        <div class="fc-sub">Random Forest</div>
+        <div class="fc-label">RF Precision@500</div>
+        <div class="fc-val green">~90%</div>
+        <div class="fc-sub">vs 87% baseline</div>
       </div>
       <div class="floating-card">
-        <div class="fc-label">Extra violations/week</div>
-        <div class="fc-val amber">+16</div>
-        <div class="fc-sub">vs time-based policy</div>
+        <div class="fc-label">Restaurant overlap</div>
+        <div class="fc-val amber">0</div>
+        <div class="fc-sub">train/test verified clean</div>
       </div>
     </div>
   </div>
@@ -1171,7 +1172,7 @@
     <div class="nyc-item">Queens <span>27.7%</span> of restaurants</div>
     <div class="nyc-item">Brooklyn <span>24.3%</span> of restaurants</div>
     <div class="nyc-item">Top cuisine: <span>American</span></div>
-    <div class="nyc-item">Time-based split <span>80/20</span></div>
+    <div class="nyc-item">Restaurant-ID split <span>80/20</span></div>
     <div class="nyc-item">Features: <span>26</span></div>
     <div class="nyc-item">NYU Stern <span>·</span> Spring 2026</div>
     <div class="nyc-item">NYC DOHMH <span>·</span> 5 Boroughs</div>
@@ -1180,14 +1181,14 @@
     <div class="nyc-item">Queens <span>27.7%</span> of restaurants</div>
     <div class="nyc-item">Brooklyn <span>24.3%</span> of restaurants</div>
     <div class="nyc-item">Top cuisine: <span>American</span></div>
-    <div class="nyc-item">Time-based split <span>80/20</span></div>
+    <div class="nyc-item">Restaurant-ID split <span>80/20</span></div>
     <div class="nyc-item">Features: <span>26</span></div>
     <div class="nyc-item">NYU Stern <span>·</span> Spring 2026</div>
   </div>
 </div>
 
 <!-- BUSINESS PROPOSAL -->
-<section id="proposal">
+<section id="business">
   <div class="container">
     <div class="section-tag">01 — Business Proposal</div>
     <h2 class="section-title">The problem with<br>how NYC inspects restaurants</h2>
@@ -1219,25 +1220,192 @@
         <div class="card-title">Prior Work</div>
         <p class="card-text">Inspired by Chicago's Food Inspection Forecasting project (2016), which used a random forest model and demonstrated high-risk establishments were found ~1 week earlier than under the prior policy. PlateRisk applies this framework to the NYC context.</p>
       </div>
+
+      <!-- PREDICTIVE MODELING PROBLEM -->
+      <div class="proposal-card full" style="border-left: 2px solid var(--accent2); padding-left: 1.75rem;">
+        <div class="card-title" style="margin-bottom: 1rem; color: var(--accent2);">Predictive Modeling Problem</div>
+        <p class="card-text" style="margin-bottom: 1.25rem;">This is a <strong style="color: var(--text); font-weight: 600;">supervised binary classification</strong> task. For each restaurant, the model predicts the probability that an inspection results in a critical violation. A risk score is output per establishment, used to rank and select the top-K for inspection.</p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+          <div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Data Instance</div>
+            <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">One row per restaurant per inspection cycle, based on the NYC Open Data restaurant inspection dataset. Filtered to initial cycle inspections only.</p>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Target Variable</div>
+            <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">Binary — whether an inspection results in a critical violation (1) or not (0). Defined on the current inspection, not the next, to avoid temporal remediation bias. Base rate ~87% in the inspected sample.</p>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Features</div>
+            <ul style="font-size: 13px; color: var(--text2); line-height: 1.8; list-style: none; padding: 0;">
+              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Prior inspection history</li>
+              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Time since last inspection</li>
+              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Cuisine type, borough</li>
+              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Temporal: season, day of week</li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <div class="proposal-card full">
-        <div class="card-title" style="margin-bottom: 1rem;">Expected Value at K=500</div>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+        <div class="card-title" style="margin-bottom: 0.5rem;">Expected Value at K=500</div>
+        <p style="font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; font-family: var(--mono);">Preliminary — ranking value emphasized due to high base rate in inspected sample.</p>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">WEEKLY BUDGET</div>
             <div style="font-size: 26px; font-weight: 700;">$250,000</div>
             <div style="font-size: 12px; color: var(--text3);">500 × $500 per inspection</div>
           </div>
           <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">VIOLATIONS CAUGHT / WEEK</div>
-            <div style="font-size: 26px; font-weight: 700; color: var(--green);">453 <span style="font-size: 14px; color: var(--text3);">vs 437</span></div>
-            <div style="font-size: 12px; color: var(--text3);">+16 more than current policy</div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">RF ROC-AUC</div>
+            <div style="font-size: 26px; font-weight: 700; color: var(--green);">0.685</div>
+            <div style="font-size: 12px; color: var(--text3);">primary model</div>
           </div>
           <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">ANNUAL IMPROVEMENT</div>
-            <div style="font-size: 26px; font-weight: 700; color: var(--accent);">+832</div>
-            <div style="font-size: 12px; color: var(--text3);">extra violations caught per year</div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">GB ROC-AUC</div>
+            <div style="font-size: 26px; font-weight: 700; color: var(--accent);">0.699</div>
+            <div style="font-size: 12px; color: var(--text3);">best model</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">PRIMARY VALUE</div>
+            <div style="font-size: 26px; font-weight: 700; color: var(--amber);">Ranking</div>
+            <div style="font-size: 12px; color: var(--text3);">Severity prioritization</div>
           </div>
         </div>
+        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;">
+          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">At an 87% base rate in the inspected population, the primary business value of PlateRisk is severity ranking — surfacing the highest-risk restaurants for prioritized scheduling — rather than violation detection per se.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DATA UNDERSTANDING -->
+<section id="data">
+  <div class="container">
+    <div class="section-tag">02 — Data Understanding</div>
+    <h2 class="section-title">Data Understanding</h2>
+    <p class="section-sub">What the NYC Open Data inspection dataset contains — and what it cannot.</p>
+
+    <div class="proposal-grid" style="margin-top: 2.5rem;">
+      <div class="proposal-card">
+        <div class="card-icon green">🗂️</div>
+        <div class="card-title">Dataset Overview</div>
+        <p class="card-text">500,000 rows via Socrata API, each row = one violation, after filtering to initial cycle inspections and aggregating: ~83,480 inspection-level records across 27,000+ unique restaurants (CAMIS IDs).</p>
+      </div>
+      <div class="proposal-card">
+        <div class="card-icon amber">⚠️</div>
+        <div class="card-title">Selection Bias</div>
+        <p class="card-text">Only previously inspected restaurants appear in the dataset with violation labels; DOHMH already targets higher-risk establishments; this is a fundamental unresolvable limitation.</p>
+      </div>
+      <div class="proposal-card">
+        <div class="card-icon blue">🧾</div>
+        <div class="card-title">Key Columns Used</div>
+        <p class="card-text"><code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">camis</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">inspection_date</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">critical_flag</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">score</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">boro</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">cuisine_description</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">inspection_type</code></p>
+      </div>
+      <div class="proposal-card">
+        <div class="card-icon purple">📊</div>
+        <div class="card-title">Class Distribution</div>
+        <p class="card-text">~87% critical rate in inspected sample, explained by selection bias + DOHMH targeting + any() aggregation logic. Uses <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">class_weight='balanced'</code>, reports ROC-AUC and Precision@K not accuracy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DATA PREPARATION -->
+<section id="preparation">
+  <div class="container">
+    <div class="section-tag">03 — Data Preparation</div>
+    <h2 class="section-title">Data Preparation</h2>
+    <p class="section-sub">From raw violation rows → inspection-level features ready for modeling.</p>
+
+    <div class="process-grid" style="margin-top: 2.5rem;">
+      <div class="process-card prep">
+        <div class="process-num">STEP 01</div>
+        <div class="process-title">Filtering</div>
+        <ul class="process-items">
+          <li>dropped missing rows, filtered to Cycle Inspection / Initial Inspection only, re-inspections excluded</li>
+        </ul>
+      </div>
+
+      <div class="process-card prep">
+        <div class="process-num">STEP 02</div>
+        <div class="process-title">Aggregation</div>
+        <ul class="process-items">
+          <li>grouped by (camis, inspection_date), any_critical_violation uses exact match == "Critical", score = max, num_violations = count</li>
+        </ul>
+      </div>
+
+      <div class="process-card prep">
+        <div class="process-num">STEP 03</div>
+        <div class="process-title">Target Reformulation</div>
+        <ul class="process-items">
+          <li>target = any_critical_violation for current inspection; original next-inspection formulation caused near-zero test positives due to remediation; reformulation endorsed by Prof. Provost</li>
+        </ul>
+      </div>
+
+      <div class="process-card prep">
+        <div class="process-num">STEP 04</div>
+        <div class="process-title">Feature Engineering</div>
+        <ul class="process-items">
+          <li>prev_score and prev_critical use shift(1); total_past_critical uses shift(1).cumsum(); days_since_last date diff filled 365; inspection_month and inspection_dow; top-15 cuisine + 4 borough dummies</li>
+        </ul>
+      </div>
+
+      <div class="process-card prep">
+        <div class="process-num">STEP 05</div>
+        <div class="process-title">Train/Test Split</div>
+        <ul class="process-items">
+          <li>GroupShuffleSplit on camis, 80/20, zero restaurant overlap verified; temporal split abandoned — caused near-zero test positives</li>
+        </ul>
+      </div>
+
+      <div class="process-card prep">
+        <div class="process-num">STEP 06</div>
+        <div class="process-title">Bug Fixes</div>
+        <ul class="process-items">
+          <li>str.contains('critical') → == 'Critical'; total_past_critical uses shift(1).cumsum(); all historical features use shift(1)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top: 1.75rem; padding: 1rem 1.25rem; background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;">
+      <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">The shift from temporal to restaurant-based split was the single most important modeling decision. The original temporal split left the test set with near-zero positives after August 2025. The restaurant split correctly simulates deployment to previously unseen establishments.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MODELING -->
+<section id="modeling">
+  <div class="container">
+    <div class="section-tag">04 — Modeling</div>
+    <h2 class="section-title">Modeling</h2>
+    <p class="section-sub">All models output probability scores used for ranking and selecting the top-K.</p>
+
+    <div class="proposal-grid" style="margin-top: 2.5rem;">
+      <div class="proposal-card">
+        <div class="card-icon blue">📉</div>
+        <div class="card-title">Logistic Regression — ML Floor</div>
+        <p class="card-text">regularized LR on 26 features; pros: fast, explainable, calibrated; cons: assumes linear relationships, misses interactions</p>
+      </div>
+      <div class="proposal-card">
+        <div class="card-icon green">🌲</div>
+        <div class="card-title">Random Forest — Primary Model</div>
+        <p class="card-text">300 trees, max depth 10, min samples leaf 20, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">class_weight='balanced'</code>; pros: captures non-linear interactions, built-in feature importance, robust to outliers; cons: slower, less interpretable than single tree</p>
+      </div>
+      <div class="proposal-card">
+        <div class="card-icon purple">🚀</div>
+        <div class="card-title">Gradient Boosting — Best AUC</div>
+        <p class="card-text">200 estimators, lr 0.05, max depth 5, subsample 0.8; pros: highest ROC-AUC; cons: more hyperparameters, prone to overfitting, less interpretable</p>
+      </div>
+      <div class="proposal-card">
+        <div class="card-icon amber">✅</div>
+        <div class="card-title">Why This Solves the Business Problem</div>
+        <p class="card-text">all models output probability scores for ranking; at ROC-AUC ~0.70 the model ranks high-risk above low-risk ~70% of the time vs 50% random</p>
       </div>
     </div>
   </div>
@@ -1335,28 +1503,28 @@
   <div class="container">
     <div class="section-tag">03 — Preliminary Results</div>
     <h2 class="section-title">Results Dashboard</h2>
-    <p class="section-sub">Results from the status report stage. Models trained on initial cycle inspections only (46,641 records), 80/20 time-based split. Target: critical violation at next inspection.</p>
+    <p class="section-sub">Results from the status report stage. Models trained on initial cycle inspections only (46,641 records), 80/20 Restaurant-ID split. Target: critical violation on the current inspection.</p>
 
     <div class="metrics-row" style="margin-top: 2.5rem;">
       <div class="metric-card">
-        <div class="metric-label">Best Precision@K</div>
-        <div class="metric-value" style="color: var(--green);">95.0%</div>
-        <div class="metric-delta">Random Forest — K=500</div>
-      </div>
-      <div class="metric-card">
         <div class="metric-label">Best ROC-AUC</div>
-        <div class="metric-value" style="color: var(--accent);">0.656</div>
-        <div class="metric-delta">Random Forest — +0.149 vs random</div>
+        <div class="metric-value" style="color: var(--accent);">0.699</div>
+        <div class="metric-delta">Gradient Boosting</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">vs Current Policy</div>
-        <div class="metric-value" style="color: var(--amber);">+5.8pp</div>
-        <div class="metric-delta">Precision@K improvement</div>
+        <div class="metric-label">RF ROC-AUC</div>
+        <div class="metric-value" style="color: var(--green);">0.685</div>
+        <div class="metric-delta">Primary model</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">Training Set</div>
-        <div class="metric-value">37.3K</div>
-        <div class="metric-delta">inspections · 25.1% target rate</div>
+        <div class="metric-label">AUC Lift vs Random</div>
+        <div class="metric-value" style="color: var(--amber);">+0.20</div>
+        <div class="metric-delta">ROC-AUC improvement over chance</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Restaurant Overlap</div>
+        <div class="metric-value">0</div>
+        <div class="metric-delta">train/test verified clean</div>
       </div>
     </div>
 
@@ -1396,14 +1564,14 @@
           <tr class="highlight">
             <td><strong>Random Forest</strong></td>
             <td><strong>0.950</strong></td>
-            <td><strong>0.656</strong></td>
+            <td><strong>0.685</strong></td>
             <td><strong>+6.8pp Precision</strong></td>
             <td><span class="badge badge-blue">Our model ★</span></td>
           </tr>
           <tr class="highlight">
             <td><strong>Gradient Boosting</strong></td>
             <td><strong>0.920</strong></td>
-            <td><strong>0.630</strong></td>
+            <td><strong>0.699</strong></td>
             <td>+3.8pp Precision</td>
             <td><span class="badge badge-blue">Our model</span></td>
           </tr>
@@ -1411,17 +1579,41 @@
       </table>
     </div>
 
+    <!-- CHARTS -->
+    <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+      <div class="proposal-card">
+        <div class="card-title" style="margin-bottom: 1rem;">ROC Curves — All Models</div>
+        <img src="Outputs/roc_curves.png" alt="ROC Curves — All Models" style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+      <div class="proposal-card">
+        <div class="card-title" style="margin-bottom: 1rem;">Cumulative Lift Curves</div>
+        <img src="Outputs/lift_curves.png" alt="Cumulative Lift Curves" style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+      <div class="proposal-card">
+        <div class="card-title" style="margin-bottom: 1rem;">Feature Importance (Random Forest)</div>
+        <img src="Outputs/feature_importance.png" alt="Feature Importance (Random Forest)" style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+      <div class="proposal-card">
+        <div class="card-title" style="margin-bottom: 1rem;">Expected Value at K=500</div>
+        <img src="Outputs/expected_value.png" alt="Expected Value at K=500" style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+      <div class="proposal-card" style="grid-column: 1 / -1;">
+        <div class="card-title" style="margin-bottom: 1rem;">Borough Fairness Analysis</div>
+        <img src="Outputs/fairness_borough.png" alt="Borough Fairness Analysis" style="width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </div>
+    </div>
+
     <!-- KEY FINDING -->
     <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
       <div class="proposal-card">
         <div class="card-icon blue">📈</div>
         <div class="card-title">What the ROC-AUC Tells Us</div>
-        <p class="card-text">A ROC-AUC of 0.656 for Random Forest means the model correctly ranks a randomly chosen critical-violation restaurant above a non-critical one 65.6% of the time — meaningfully better than the 50% you'd get from random chance. Despite the high base rate in the dataset, the model is learning genuine signal from features like cumulative past violations, previous score, and days since last inspection.</p>
+        <p class="card-text">A ROC-AUC of 0.699 for Gradient Boosting means the model correctly ranks a randomly chosen critical-violation restaurant above a non-critical one ~69.9% of the time — meaningfully better than the 50% you'd get from random chance. In ranking terms, the model places higher-risk restaurants above lower-risk ones about 70% of the time.</p>
       </div>
       <div class="proposal-card">
-        <div class="card-icon green">🏆</div>
-        <div class="card-title">Why Random Forest Wins</div>
-        <p class="card-text">Random Forest outperforms Gradient Boosting on both metrics at this stage. The top predictive features are <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">total_past_critical</code> (0.218), <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">prev_score</code> (0.179), and <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">days_since_last</code> (0.153) — all historically grounded risk signals that make intuitive sense for a government inspection context.</p>
+        <div class="card-icon green">🏙️</div>
+        <div class="card-title">Borough Fairness Skew</div>
+        <p class="card-text">Top-K recommendations are not borough-neutral: Manhattan tends to be under-represented while Queens can be over-represented, reflecting historical inspection patterns and the underlying label/selection bias. This is tracked explicitly via borough-level share comparisons and treated as a deployment risk requiring auditing and policy constraints.</p>
       </div>
     </div>
 
@@ -1444,6 +1636,68 @@
     <div class="warning-banner" style="margin-top: 1.5rem;">
       <span>ℹ</span>
       <span>Results are preliminary and subject to revision. Target definition (any critical violation at next inspection, ~87% base rate in inspected sample) is an open question being discussed with Prof. Provost for the final writeup. ROC-AUC of 0.656 confirms genuine predictive signal regardless of target definition.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DEPLOYMENT -->
+<section id="deployment">
+  <div class="container">
+    <div class="section-tag">04 — Deployment</div>
+    <h2 class="section-title">Deployment</h2>
+    <p class="section-sub">A practical weekly workflow — plus clear limits and ethical guardrails.</p>
+
+    <div class="next-grid" style="margin-top: 2.5rem;">
+      <div class="next-card">
+        <div class="next-num">01 — PIPELINE</div>
+        <div class="next-title">Weekly Score Pipeline</div>
+        <p class="next-text">pull API → compute features → score → output ranked list → human review</p>
+      </div>
+      <div class="next-card">
+        <div class="next-num">02 — SCOPE</div>
+        <div class="next-title">Only Works on Inspected Restaurants</div>
+        <p class="next-text">new restaurants outside model's distribution; need separate heuristic</p>
+      </div>
+      <div class="next-card">
+        <div class="next-num">03 — MONITORING</div>
+        <div class="next-title">Monthly Model Refresh</div>
+        <p class="next-text">rolling 3-year window, monthly Precision@K monitoring, 5pp degradation triggers retraining</p>
+      </div>
+    </div>
+
+    <div class="limits-grid" style="margin-top: 2.5rem;">
+      <div class="limit-card">
+        <span class="limit-tag tag-keep">Keep</span>
+        <div class="limit-title">Feedback Loop Amplification</div>
+        <p class="limit-text">inspected restaurants accumulate more labels, reinforcing targeting; mitigate by reserving 10% random slots</p>
+      </div>
+      <div class="limit-card">
+        <span class="limit-tag tag-keep">Keep</span>
+        <div class="limit-title">Geographic Disparate Impact</div>
+        <p class="limit-text">Manhattan under-represented; mitigate with borough-proportional floor and fairness auditing</p>
+      </div>
+      <div class="limit-card">
+        <span class="limit-tag tag-ack">Acknowledged</span>
+        <div class="limit-title">Transparency &amp; Due Process</div>
+        <p class="limit-text">operators have no visibility into scoring; mitigate with plain-language explanations from feature importance</p>
+      </div>
+      <div class="limit-card">
+        <span class="limit-tag tag-ack">Acknowledged</span>
+        <div class="limit-title">Model Staleness &amp; Distribution Shift</div>
+        <p class="limit-text">risk profiles shift; monthly monitoring with 5pp threshold for retraining</p>
+      </div>
+      <div class="limit-card">
+        <span class="limit-tag tag-resolve">Resolved</span>
+        <div class="limit-title">Critical Flag Parsing Bug</div>
+        <p class="limit-text">str.contains fixed to exact match; 87% rate is genuine selection bias not a bug; all results use corrected pipeline</p>
+      </div>
+      <div class="limit-card">
+        <span class="limit-tag tag-resolve">Resolved</span>
+        <div class="limit-title">Temporal Leakage in Target</div>
+        <p class="limit-text">next-inspection target caused near-zero test positives; resolved by current-inspection target + GroupShuffleSplit per Prof. Provost</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1476,18 +1730,18 @@
             <span class="tl-status status-done">Done</span>
           </div>
           <div class="timeline-item">
-            <div class="tl-dot active">3</div>
+            <div class="tl-dot done">✓</div>
             <div class="tl-label">Status Report</div>
             <div class="tl-date">Apr 11, 2026</div>
             <div class="tl-desc">Preliminary results, models, fairness analysis</div>
-            <span class="tl-status status-wip">Active</span>
+            <span class="tl-status status-done">Done</span>
           </div>
           <div class="timeline-item">
-            <div class="tl-dot upcoming">4</div>
+            <div class="tl-dot active">4</div>
             <div class="tl-label">Final Writeup</div>
             <div class="tl-date">TBD</div>
             <div class="tl-desc">Full report, final results, deployment discussion</div>
-            <span class="tl-status status-next">Upcoming</span>
+            <span class="tl-status status-wip">Active</span>
           </div>
         </div>
       </div>
@@ -1647,7 +1901,8 @@
         <ul class="team-contrib">
           <li>Feature engineering (temporal + historical)</li>
           <li>Categorical encoding (boro + cuisine)</li>
-          <li>Time-based 80/20 train/test split</li>
+          <li>total_past_critical shift(1).cumsum() fix</li>
+          <li>GroupShuffleSplit restaurant-based train/test split</li>
           <li>Heuristic & logistic regression baselines</li>
           <li>Precision@K & ROC-AUC evaluation</li>
         </ul>
@@ -1664,10 +1919,21 @@
           <li>Expected value & ROI framing</li>
           <li class="extra">GitHub repo architecture & documentation</li>
           <li class="extra">Live stakeholder report (this page)</li>
-          <li class="extra">Business framing & CRISP-DM narrative</li>
-          <li class="extra">Team coordination & known issues log</li>
+          <li class="extra">Business framing & deployment section</li>
+          <li class="extra">Team coordination & problem reformulation</li>
         </ul>
       </div>
+    </div>
+
+    <div class="proposal-card full" style="margin-top: 2rem;">
+      <div class="card-title" style="margin-bottom: 1rem;">Bibliography</div>
+      <ol style="margin: 0; padding-left: 1.25rem; color: var(--text2); line-height: 1.8; font-size: 14px;">
+        <li>City of Chicago (2016) Food Inspection Forecasting</li>
+        <li>NYC DOHMH Restaurant Inspection Results — NYC Open Data</li>
+        <li>Provost &amp; Fawcett (2013) Data Science for Business — O'Reilly</li>
+        <li>Pedregosa et al. (2011) Scikit-learn — JMLR 12</li>
+        <li>Breiman (2001) Random Forests — Machine Learning 45(1)</li>
+      </ol>
     </div>
   </div>
 </section>
