@@ -308,113 +308,6 @@
   }
 
   /* BUSINESS PROPOSAL */
-<!-- BUSINESS PROPOSAL -->
-<section id="business">
-  <div class="container">
-    <div class="section-tag">01 — Business Proposal</div>
-    <h2 class="section-title">The problem with<br>how NYC inspects restaurants</h2>
-    <p class="section-sub">NYC's Department of Health conducts ~100,000 restaurant inspections per year under a fixed weekly capacity. Scheduling decisions currently don't account for risk — high-risk establishments may go undetected longer than necessary.</p>
-
-    <div class="quote-block">
-      <p class="quote-text">"Even a modest improvement in the precision of inspection targeting could meaningfully reduce the lag between when a violation develops and when it is caught."</p>
-      <p class="quote-attr">— PlateRisk Project Proposal, March 2026</p>
-    </div>
-
-    <div class="proposal-grid">
-      <div class="proposal-card">
-        <div class="card-icon blue">📍</div>
-        <div class="card-title">The Business Problem</div>
-        <p class="card-text">27,000+ active restaurants, ~100,000 inspections per year, fixed weekly capacity K. Currently scheduled by time-since-last-inspection with no systematic risk profiling. High-risk restaurants may wait weeks before being flagged, creating preventable public health exposure.</p>
-      </div>
-      <div class="proposal-card">
-        <div class="card-icon green">🎯</div>
-        <div class="card-title">The Use Case</div>
-        <p class="card-text">A DOHMH analyst uses PlateRisk's output each week to generate a prioritized inspection queue. The top-K restaurants ranked by predicted risk score are flagged for scheduling — replacing ad hoc scheduling with a data-driven policy. Inspectors retain discretion over individual cases.</p>
-      </div>
-      <div class="proposal-card">
-        <div class="card-icon amber">⚡</div>
-        <div class="card-title">The Decision Logic</div>
-        <p class="card-text">Prior to each weekly cycle, the model scores all eligible restaurants by predicted probability of critical violation. Top-K are flagged. Below-threshold restaurants are deferred unless they trigger a complaint-based inspection. An open design question: should K be uniform citywide or allocated by borough?</p>
-      </div>
-      <div class="proposal-card">
-        <div class="card-icon purple">📚</div>
-        <div class="card-title">Prior Work</div>
-        <p class="card-text">Inspired by Chicago's Food Inspection Forecasting project (2016), which used a random forest model and showed high-risk establishments were found ~1 week earlier than under the prior policy. PlateRisk applies this framework to the NYC context, where borough density and restaurant scale introduce distinct modeling challenges.</p>
-      </div>
-
-      <!-- PREDICTIVE MODELING PROBLEM -->
-      <div class="proposal-card full" style="border-left: 2px solid var(--accent2); padding-left: 1.75rem;">
-        <div class="card-title" style="margin-bottom: 1rem; color: var(--accent2);">Predictive Modeling Problem</div>
-        <p class="card-text" style="margin-bottom: 1.25rem;">This is a <strong style="color: var(--text); font-weight: 600;">supervised binary classification</strong> task. For each restaurant, the model predicts the probability that its next inspection will result in a critical violation. A risk score is output per establishment, used to rank and select the top-K for inspection.</p>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Data Instance</div>
-            <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">One row per restaurant per inspection cycle, based on the NYC Open Data restaurant inspection dataset. Filtered to initial cycle inspections only.</p>
-          </div>
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Target Variable</div>
-            <p style="font-size: 13px; color: var(--text2); line-height: 1.6;">Binary — whether an inspection results in a critical violation (1) or not (0). Defined on the current inspection, not the next, to avoid temporal remediation bias. Base rate ~87% in the inspected sample.</p>
-          </div>
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Features</div>
-            <ul style="font-size: 13px; color: var(--text2); line-height: 1.8; list-style: none; padding: 0;">
-              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Prior inspection history</li>
-              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Time since last inspection</li>
-              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Cuisine type, borough</li>
-              <li style="padding-left: 12px; position: relative;"><span style="position: absolute; left: 0; color: var(--text3);">›</span>Temporal: season, day of week</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- CLASS IMBALANCE -->
-      <div class="proposal-card">
-        <div class="card-icon amber">⚖️</div>
-        <div class="card-title">Class Imbalance & Data Finding</div>
-        <p class="card-text">Our inspected sample shows ~87% critical violation rate — higher than the 20–25% cited in DOHMH annual reports. This is a genuine data characteristic driven by selection bias (only inspected restaurants appear), inspection targeting (DOHMH already prioritizes risk), and aggregation logic (any single critical row flags the whole visit). We use ROC-AUC and Precision@K as primary metrics — not accuracy — and <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">class_weight='balanced'</code> in all models. Target redefinition is an open question for the final writeup.</p>
-      </div>
-
-      <!-- EVALUATION PLAN -->
-      <div class="proposal-card">
-        <div class="card-icon green">📊</div>
-        <div class="card-title">Evaluation Plan</div>
-        <p class="card-text">Historical backtest simulation: for each time window, simulate selecting the top-K restaurants by predicted score and compare outcomes against two baselines — (1) random selection and (2) longest-time-since-last-inspection. Primary metrics: Precision@K and ROC-AUC. Fairness analysis by borough and cuisine type conducted to screen for disparate impact.</p>
-      </div>
-
-      <!-- EXPECTED VALUE -->
-      <div class="proposal-card full">
-        <div class="card-title" style="margin-bottom: 0.5rem;">Expected Value at K=500</div>
-        <p style="font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; font-family: var(--mono);">Preliminary — based on current model results. Target definition open question to be resolved with Prof. Provost for final writeup.</p>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">WEEKLY BUDGET</div>
-            <div style="font-size: 26px; font-weight: 700;">$250,000</div>
-            <div style="font-size: 12px; color: var(--text3);">500 × $500 per inspection</div>
-          </div>
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">RF ROC-AUC</div>
-            <div style="font-size: 26px; font-weight: 700; color: var(--green);">0.685</div>
-            <div style="font-size: 12px; color: var(--text3);">genuine learned signal</div>
-          </div>
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">GB ROC-AUC</div>
-            <div style="font-size: 26px; font-weight: 700; color: var(--accent);">0.699</div>
-            <div style="font-size: 12px; color: var(--text3);">best performing model</div>
-          </div>
-          <div>
-            <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">PRIMARY VALUE</div>
-            <div style="font-size: 26px; font-weight: 700; color: var(--amber);">Ranking</div>
-            <div style="font-size: 12px; color: var(--text3);">Severity prioritization</div>
-          </div>
-        </div>
-        <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;">
-          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">At an 87% base rate in the inspected population, the primary business value of PlateRisk is severity ranking — surfacing the highest-risk restaurants for prioritized scheduling — rather than violation detection per se.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
   /* RESULTS DASHBOARD */
   .metrics-row {
     display: grid;
@@ -1560,7 +1453,7 @@
 <!-- DEPLOYMENT -->
 <section id="deployment">
   <div class="container">
-    <div class="section-tag">04 — Deployment</div>
+    <div class="section-tag">06 — Deployment</div>
     <h2 class="section-title">Deployment</h2>
     <p class="section-sub">A practical weekly workflow — plus clear limits and ethical guardrails.</p>
 
@@ -1622,7 +1515,7 @@
 <!-- MEET THE TEAM -->
 <section id="team">
   <div class="container">
-    <div class="section-tag">07 — The Team</div>
+    <div class="section-tag">08 — Team</div>
     <h2 class="section-title">Meet the team</h2>
     <p class="section-sub">NYU Stern MBA, Spring 2026 · TECH-GB.2336 Data Science & AI for Business · Prof. Foster Provost & Baotong Zhang</p>
 
