@@ -1002,25 +1002,25 @@
   <div class="hero-glow2"></div>
   <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 3rem;">
     <div class="hero-content" style="flex: 1;">
-      <div class="hero-eyebrow">NYC · DOHMH · ML-Powered Inspection System</div>
+      <div class="hero-eyebrow">NYC · Public Health · Predictive Risk Scoring</div>
       <h1>Plate<span class="highlight">Risk</span></h1>
-      <p class="hero-sub">Predicting critical food safety violations across NYC's 27,000+ restaurants — helping DOHMH allocate limited inspection resources where they matter most.</p>
+      <p class="hero-sub">NYC's restaurant inspectors have 500 slots per week and 27,000 restaurants to cover. PlateRisk uses machine learning to rank establishments by predicted violation risk — so the worst offenders are inspected first.</p>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="num">27K+</div>
-          <div class="label">Active restaurants</div>
+          <div class="num">27,000+</div>
+          <div class="label">Active NYC restaurants</div>
         </div>
         <div class="hero-stat">
-          <div class="num">83K</div>
-          <div class="label">Inspections loaded</div>
-        </div>
-        <div class="hero-stat">
-          <div class="num">K=500</div>
-          <div class="label">Weekly capacity</div>
+          <div class="num">87K</div>
+          <div class="label">Inspection records</div>
         </div>
         <div class="hero-stat">
           <div class="num">0.699</div>
           <div class="label">Best ROC-AUC</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">+6.8pp</div>
+          <div class="label">Precision gain vs baseline</div>
         </div>
       </div>
       <div class="hero-ctas">
@@ -1038,19 +1038,19 @@
 
     <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 1rem;">
       <div class="floating-card">
-        <div class="fc-label">GB ROC-AUC</div>
-        <div class="fc-val blue">0.699</div>
-        <div class="fc-sub">Best model</div>
+        <div class="fc-label">RF Precision@K=500</div>
+        <div class="fc-val blue">95.0%</div>
+        <div class="fc-sub">vs 88.2% random baseline</div>
       </div>
       <div class="floating-card" style="margin-left: 2rem;">
-        <div class="fc-label">RF Precision@500</div>
-        <div class="fc-val green">~90%</div>
-        <div class="fc-sub">vs 87% baseline</div>
+        <div class="fc-label">GB ROC-AUC</div>
+        <div class="fc-val green">0.699</div>
+        <div class="fc-sub">best discriminative model</div>
       </div>
       <div class="floating-card">
-        <div class="fc-label">Restaurant overlap</div>
+        <div class="fc-label">Restaurant split</div>
         <div class="fc-val amber">0</div>
-        <div class="fc-sub">train/test verified clean</div>
+        <div class="fc-sub">train/test overlap · verified clean</div>
       </div>
     </div>
   </div>
@@ -1085,34 +1085,34 @@
   <div class="container">
     <div class="section-tag">01 — Business Understanding</div>
     <h2 class="section-title">Predicting risk before the inspector arrives</h2>
-    <p class="section-sub">NYC has 27,000+ active restaurants and a fixed weekly inspection budget. PlateRisk gives restaurant operators and DOHMH analysts a data-driven risk score — built from historical inspection patterns, cuisine type, borough, and timing — so the highest-risk inspections happen first.</p>
+    <p class="section-sub">NYC's Department of Health and Mental Hygiene (DOHMH) conducts approximately 100,000 restaurant inspections annually under a fixed weekly scheduling budget. The current heuristic — prioritizing establishments by time elapsed since their last inspection — incorporates no predictive risk signal. PlateRisk is a proof-of-concept decision support system that replaces this heuristic with a machine learning risk score derived from historical inspection records, cuisine type, borough, and temporal patterns.</p>
 
     <div class="proposal-grid">
       <div class="proposal-card">
         <div class="card-icon blue">📍</div>
         <div class="card-title">The Business Problem</div>
-        <p class="card-text">NYC's DOHMH conducts ~100,000 inspections per year under a fixed weekly budget of ~K=500 per week. The current scheduling heuristic — time-since-last-inspection — ignores all risk signal. PlateRisk replaces it with a model-driven risk score, concentrating inspector effort where violations are most likely to occur.</p>
+        <p class="card-text">With a fixed weekly inspection capacity of K≈500 and over 27,000 active establishments, DOHMH faces a resource allocation problem. The status quo time-based heuristic treats a low-risk diner that was last inspected 11 months ago identically to a high-violation-history restaurant inspected at the same time. PlateRisk addresses this gap by outputting a calibrated risk score per establishment, enabling analysts to concentrate scarce inspection resources where the probability of a critical violation is highest.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon green">🎯</div>
         <div class="card-title">The Use Case</div>
-        <p class="card-text">Primary use case: a DOHMH analyst uses PlateRisk's weekly output to generate a prioritized inspection queue — the top-K restaurants by predicted risk are flagged for scheduling. Secondary use case: restaurant operators subscribe to PlateRisk as a compliance copilot, receiving a pre-inspection risk score and actionable guidance on what to fix before the inspector arrives.</p>
+        <p class="card-text">The primary stakeholder is a DOHMH inspection planning analyst. Each week, the analyst uses PlateRisk's ranked output to populate the weekly inspection queue — replacing ad hoc scheduling with a systematic, auditable, data-driven prioritization. Human discretion is retained at every stage: the model produces a ranked recommendation, not an automated enforcement decision. A secondary deployment pathway — licensing the risk score to restaurant operators as a pre-inspection compliance tool — is discussed in the Deployment section.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon amber">⚡</div>
         <div class="card-title">The Decision Logic</div>
-        <p class="card-text">Each week: score all eligible restaurants by predicted critical violation probability → select top-K → deliver ranked queue to analyst dashboard → human review before finalizing. The threshold K is a tunable policy parameter. Restaurants below threshold are deferred unless a 311 complaint triggers reactive inspection. No automated enforcement — human discretion is always retained.</p>
+        <p class="card-text">Weekly workflow: (1) Pull updated inspection records from the NYC Open Data API. (2) Compute restaurant-level features from the updated history. (3) Score all eligible restaurants using the trained model. (4) Rank by predicted violation probability and select the top-K for the upcoming inspection cycle. (5) Deliver the ranked queue to the analyst dashboard for human review before finalizing. The threshold K is a tunable policy parameter set by DOHMH operations. Establishments below threshold are deferred to the following cycle unless a 311 complaint triggers a reactive inspection.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon purple">💡</div>
         <div class="card-title">Prior Work</div>
-        <p class="card-text">Inspired by Chicago's Food Inspection Forecasting project (City of Chicago, 2016), which demonstrated that high-risk establishments were found ~1 week earlier than under the prior policy within the same budget. We adapt this framework to NYC's scale, where borough density, selection bias, and a post-pandemic inspection backlog introduce distinct modeling challenges.</p>
+        <p class="card-text">The methodological foundation is Chicago's Food Inspection Forecasting initiative (City of Chicago, 2016), which demonstrated that a random forest classifier could identify high-risk establishments approximately one week earlier than the prior scheduling policy — within an identical inspection budget. Potash et al. (2015) provide the academic basis for applying predictive modeling to public health resource allocation. PlateRisk adapts this framework to the NYC context, which introduces distinct challenges: greater borough-level heterogeneity, a larger establishment base, and a post-pandemic inspection backlog that compressed the historical label distribution.</p>
       </div>
 
       <!-- PREDICTIVE MODELING PROBLEM -->
       <div class="proposal-card full" style="border-left: 2px solid var(--accent2); padding-left: 1.75rem;">
         <div class="card-title" style="margin-bottom: 1rem; color: var(--accent2);">Predictive Modeling Problem</div>
-        <p class="card-text" style="margin-bottom: 1.25rem;">PlateRisk is a supervised binary classification task. Given restaurant-level features available before an inspection — historical violation patterns, cuisine type, borough, and timing — the model outputs a probability score indicating risk of a critical violation. This score ranks all eligible restaurants to select the top-K for weekly scheduling.</p>
+        <p class="card-text" style="margin-bottom: 1.25rem;">PlateRisk is formulated as a supervised binary classification problem. For each restaurant in the inspected population, the model estimates the probability that an upcoming inspection will yield at least one critical violation. This probability score is used to rank all eligible establishments and select the top-K for weekly scheduling — directly operationalizing the business objective of maximizing critical violations found per inspection-hour.</p>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Data Instance</div>
@@ -1135,7 +1135,7 @@
       </div>
       <div class="proposal-card full">
         <div class="card-title" style="margin-bottom: 0.5rem;">Expected Value at K=500</div>
-        <p style="font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; font-family: var(--mono);">Business case — cost per inspection estimated at $500 (approximate NYC agency cost). Primary value is severity ranking.</p>
+        <p style="font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; font-family: var(--mono);">ROI framing — cost per inspection estimated at $500 (approximate NYC agency cost). At K=500 and RF Precision@K of 95.0% vs 88.2% random baseline, the model surfaces approximately 34 additional critical violations per week at no incremental cost.</p>
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">WEEKLY BUDGET</div>
@@ -1159,7 +1159,7 @@
           </div>
         </div>
         <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;">
-          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">At an 87% base rate in the inspected population, violation detection alone is not the value — almost every inspected restaurant has a critical violation in the observational sample. The business value is severity ranking: ordering restaurants so the highest-risk visits are prioritized under a fixed weekly K.</p>
+          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">The inspected population exhibits an ~87% base rate of critical violations — substantially higher than the 20–25% reported in DOHMH annual statistics. This reflects selection bias inherent in the observational dataset: DOHMH already targets higher-risk establishments for more frequent inspection. Consequently, the primary business value of PlateRisk is not violation detection per se, but severity ranking — ensuring the highest-risk establishments within the already-elevated-risk inspected population are prioritized under the weekly capacity constraint.</p>
         </div>
       </div>
     </div>
@@ -1173,28 +1173,28 @@
   <div class="container">
     <div class="section-tag">02 — Data Understanding</div>
     <h2 class="section-title">Data Understanding</h2>
-    <p class="section-sub">What the NYC Open Data inspection dataset contains — and what it cannot.</p>
+    <p class="section-sub">Source: NYC Open Data — DOHMH Restaurant Inspection Results (Socrata API). Updated daily. Covers all inspections from 2007 to present.</p>
 
     <div class="proposal-grid" style="margin-top: 2.5rem;">
       <div class="proposal-card">
         <div class="card-icon green">🗂️</div>
         <div class="card-title">Dataset Overview</div>
-        <p class="card-text">500,000 rows via Socrata API, each row = one violation, after filtering to initial cycle inspections and aggregating: ~83,480 inspection-level records across 27,000+ unique restaurants (CAMIS IDs).</p>
+        <p class="card-text">500,000 violation-level rows loaded via the Socrata Open Data API. Each row represents a single violation citation from a single inspection visit — one inspection may generate multiple rows. After filtering to initial cycle inspections only and aggregating to inspection level, the analytic dataset comprises approximately 83,480 inspection records across 27,000+ unique restaurants (identified by CAMIS ID), spanning 2007 to present.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon amber">⚠️</div>
         <div class="card-title">Selection Bias</div>
-        <p class="card-text">Only previously inspected restaurants appear in the dataset with violation labels; DOHMH already targets higher-risk establishments; this is a fundamental unresolvable limitation.</p>
+        <p class="card-text">The dataset contains labels only for previously inspected establishments. Restaurants that have never been inspected — typically newer or lower-profile establishments — cannot be scored by the model. Additionally, DOHMH already applies informal risk targeting in its scheduling, meaning the inspected population systematically over-represents higher-risk establishments relative to the full NYC restaurant population. This selection bias is unresolvable with the available data and represents a fundamental scope constraint on any model trained from these records.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon blue">🧾</div>
         <div class="card-title">Key Columns Used</div>
-        <p class="card-text"><code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">camis</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">inspection_date</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">critical_flag</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">score</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">boro</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">cuisine_description</code>, <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">inspection_type</code></p>
+        <p class="card-text">Primary fields used in feature construction and target definition: camis (unique restaurant identifier), inspection_date (visit date), critical_flag (Critical / Not Critical / Not Applicable at violation level), score (numeric severity), boro (borough), cuisine_description (cuisine category), inspection_type (used to filter to initial cycle inspections only). All features are computed from fields available prior to or independent of the inspection outcome.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon purple">📊</div>
         <div class="card-title">Class Distribution</div>
-        <p class="card-text">~87% critical rate in inspected sample, explained by selection bias + DOHMH targeting + any() aggregation logic. Uses <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">class_weight='balanced'</code>, reports ROC-AUC and Precision@K not accuracy.</p>
+        <p class="card-text">The aggregated dataset exhibits an ~87% critical violation rate — the proportion of inspection visits where at least one critical violation was cited. This substantially exceeds the 20–25% rate in DOHMH annual reports, attributable to three compounding factors: (1) selection bias in the inspected population; (2) DOHMH informal risk targeting; and (3) any() aggregation logic, which flags an entire visit as critical if even a single violation row carries the Critical designation. All models use <code style="font-family: var(--mono); font-size: 12px; background: var(--bg3); padding: 1px 5px; border-radius: 4px;">class_weight='balanced'</code> to correct for this imbalance. Primary evaluation metrics are ROC-AUC and Precision@K — not accuracy, which is uninformative at this base rate.</p>
       </div>
     </div>
   </div>
@@ -1420,26 +1420,7 @@
       </div>
     </div>
 
-    <!-- FAIRNESS FINDING -->
-    <div style="margin-top: 1.5rem;">
-      <div class="section-tag" style="margin-bottom: 1rem;">Borough Fairness Finding</div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-        <div class="proposal-card">
-          <div class="card-title">Queens Over-Representation — Reduced</div>
-          <p class="card-text">After filtering to initial inspections only, Queens over-representation dropped significantly — from +52.5pp (pre-fix) to +11.9pp under Random Forest. This confirms the earlier extreme over-targeting was largely an artifact of including re-inspections. Some Queens over-representation persists and is flagged as a genuine fairness concern for the final writeup.</p>
-        </div>
-        <div class="proposal-card">
-          <div class="card-title">Manhattan Under-Representation Persists</div>
-          <p class="card-text">Manhattan (34.8% of restaurants) receives only 18.6% of the top-500 inspection slots under the Random Forest model — a −18.2pp gap. This likely reflects that Manhattan restaurants historically show lower cumulative violation counts in the training data, causing the model to systematically deprioritize them. Worth investigating as a fairness issue in the final writeup.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- DATA NOTE -->
-    <div class="warning-banner" style="margin-top: 1.5rem;">
-      <span>ℹ</span>
-      <span>Results are preliminary and subject to revision. Target definition (any critical violation at next inspection, ~87% base rate in inspected sample) is an open question being discussed with Prof. Provost for the final writeup. ROC-AUC of 0.656 confirms genuine predictive signal regardless of target definition.</span>
-    </div>
+    
   </div>
 </section>
 
