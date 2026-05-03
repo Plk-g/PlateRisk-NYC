@@ -1083,41 +1083,36 @@
 <!-- BUSINESS PROPOSAL -->
 <section id="business">
   <div class="container">
-    <div class="section-tag">01 — Business Proposal</div>
-    <h2 class="section-title">The problem with<br>how NYC inspects restaurants</h2>
-    <p class="section-sub">NYC's Department of Health conducts ~100,000 restaurant inspections per year under a fixed weekly capacity. Scheduling decisions currently don't account for risk — high-risk establishments may go undetected longer than necessary.</p>
-
-    <div class="quote-block">
-      <p class="quote-text">"Even a modest improvement in the precision of inspection targeting could meaningfully reduce the lag between when a violation develops and when it is caught."</p>
-      <p class="quote-attr">— PlateRisk Project Proposal, March 2026</p>
-    </div>
+    <div class="section-tag">01 — Business Understanding</div>
+    <h2 class="section-title">Predicting risk before the inspector arrives</h2>
+    <p class="section-sub">NYC has 27,000+ active restaurants and a fixed weekly inspection budget. PlateRisk gives restaurant operators and DOHMH analysts a data-driven risk score — built from historical inspection patterns, cuisine type, borough, and timing — so the highest-risk inspections happen first.</p>
 
     <div class="proposal-grid">
       <div class="proposal-card">
         <div class="card-icon blue">📍</div>
         <div class="card-title">The Business Problem</div>
-        <p class="card-text">27,000+ active restaurants, ~100,000 inspections per year, fixed weekly capacity K. Currently scheduled by time-since-last-inspection with no systematic risk profiling. High-risk restaurants may wait weeks before being flagged.</p>
+        <p class="card-text">NYC's DOHMH conducts ~100,000 inspections per year under a fixed weekly budget of ~K=500 per week. The current scheduling heuristic — time-since-last-inspection — ignores all risk signal. PlateRisk replaces it with a model-driven risk score, concentrating inspector effort where violations are most likely to occur.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon green">🎯</div>
         <div class="card-title">The Use Case</div>
-        <p class="card-text">A DOHMH analyst uses PlateRisk's output each week to generate a prioritized inspection queue. The top-K restaurants ranked by predicted risk score are flagged for scheduling — replacing ad hoc scheduling with a data-driven policy.</p>
+        <p class="card-text">Primary use case: a DOHMH analyst uses PlateRisk's weekly output to generate a prioritized inspection queue — the top-K restaurants by predicted risk are flagged for scheduling. Secondary use case: restaurant operators subscribe to PlateRisk as a compliance copilot, receiving a pre-inspection risk score and actionable guidance on what to fix before the inspector arrives.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon amber">⚡</div>
         <div class="card-title">The Decision Logic</div>
-        <p class="card-text">Prior to each weekly cycle, the model scores all eligible restaurants by predicted probability of critical violation. Top-K are flagged. Below-threshold restaurants are deferred unless they trigger a complaint-based inspection. Human discretion is retained.</p>
+        <p class="card-text">Each week: score all eligible restaurants by predicted critical violation probability → select top-K → deliver ranked queue to analyst dashboard → human review before finalizing. The threshold K is a tunable policy parameter. Restaurants below threshold are deferred unless a 311 complaint triggers reactive inspection. No automated enforcement — human discretion is always retained.</p>
       </div>
       <div class="proposal-card">
         <div class="card-icon purple">💡</div>
         <div class="card-title">Prior Work</div>
-        <p class="card-text">Inspired by Chicago's Food Inspection Forecasting project (2016), which used a random forest model and demonstrated high-risk establishments were found ~1 week earlier than under the prior policy. PlateRisk applies this framework to the NYC context.</p>
+        <p class="card-text">Inspired by Chicago's Food Inspection Forecasting project (City of Chicago, 2016), which demonstrated that high-risk establishments were found ~1 week earlier than under the prior policy within the same budget. We adapt this framework to NYC's scale, where borough density, selection bias, and a post-pandemic inspection backlog introduce distinct modeling challenges.</p>
       </div>
 
       <!-- PREDICTIVE MODELING PROBLEM -->
       <div class="proposal-card full" style="border-left: 2px solid var(--accent2); padding-left: 1.75rem;">
         <div class="card-title" style="margin-bottom: 1rem; color: var(--accent2);">Predictive Modeling Problem</div>
-        <p class="card-text" style="margin-bottom: 1.25rem;">This is a <strong style="color: var(--text); font-weight: 600;">supervised binary classification</strong> task. For each restaurant, the model predicts the probability that an inspection results in a critical violation. A risk score is output per establishment, used to rank and select the top-K for inspection.</p>
+        <p class="card-text" style="margin-bottom: 1.25rem;">PlateRisk is a supervised binary classification task. Given restaurant-level features available before an inspection — historical violation patterns, cuisine type, borough, and timing — the model outputs a probability score indicating risk of a critical violation. This score ranks all eligible restaurants to select the top-K for weekly scheduling.</p>
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Data Instance</div>
@@ -1140,7 +1135,7 @@
       </div>
       <div class="proposal-card full">
         <div class="card-title" style="margin-bottom: 0.5rem;">Expected Value at K=500</div>
-        <p style="font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; font-family: var(--mono);">Preliminary — ranking value emphasized due to high base rate in inspected sample.</p>
+        <p style="font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; font-family: var(--mono);">Business case — cost per inspection estimated at $500 (approximate NYC agency cost). Primary value is severity ranking.</p>
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
           <div>
             <div style="font-size: 11px; font-family: var(--mono); color: var(--text3); margin-bottom: 6px;">WEEKLY BUDGET</div>
@@ -1164,7 +1159,7 @@
           </div>
         </div>
         <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(79,142,247,0.06); border: 1px solid rgba(79,142,247,0.2); border-radius: 10px;">
-          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">At an 87% base rate in the inspected population, the primary business value of PlateRisk is severity ranking — surfacing the highest-risk restaurants for prioritized scheduling — rather than violation detection per se.</p>
+          <p style="font-size: 13px; color: var(--text2); line-height: 1.6; margin: 0;">At an 87% base rate in the inspected population, violation detection alone is not the value — almost every inspected restaurant has a critical violation in the observational sample. The business value is severity ranking: ordering restaurants so the highest-risk visits are prioritized under a fixed weekly K.</p>
         </div>
       </div>
     </div>
